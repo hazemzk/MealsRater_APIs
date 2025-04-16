@@ -7,6 +7,21 @@ class Meal(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2, default= 0 )
     description = models.TextField(max_length=360)
     
+    def no_of_rating(self):
+        ratings = Rating.objects.filter(meal=self)
+        return len(ratings)
+    
+    def avg_rating(self):
+        sum = 0
+        ratings = Rating.objects.filter(meal=self)
+        for rating in ratings:
+            sum += rating.stars
+        if len(ratings) == 0:
+            return 0
+        else:
+            return sum / len(ratings)
+        
+    
     def __str__(self):
         return self.name
     
